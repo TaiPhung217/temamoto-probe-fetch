@@ -1,0 +1,20 @@
+name: probe
+on:
+  pull_request_target:
+    branches: [main]
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  default-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash ./ci/build.sh
+  ref-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: bash ./ci/build.sh
